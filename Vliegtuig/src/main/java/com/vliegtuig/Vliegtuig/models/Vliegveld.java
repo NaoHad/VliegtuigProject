@@ -1,17 +1,17 @@
 package com.vliegtuig.Vliegtuig.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Vliegveld {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String locatie;
     private String naam;
-
+    @OneToMany
+    private List<Vliegtuig> vliegtuigList;
     public String getLocatie() {
         return locatie;
     }

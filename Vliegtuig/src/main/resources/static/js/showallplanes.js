@@ -69,9 +69,48 @@ var refreshTable = function(){
 
          })
 
+        fillvliegveldListbox();
+
+  };
+
+
+var fillvliegveldListbox = function(){
+
+         //var nope = "noppppeee";
+         //$('#vliegtuiglistbox').html = "";
+         //document.getElementById("vliegtuiglistbox").selectedIndex = -1;
+         $("#vliegtuiglistbox").empty();
+         //$('#vliegtuiglistbox').append("<option>"+nope+"</option>");
+
+
+        $.ajax({
+             url: "http://localhost:8080/vliegveld",
+             type: "get",
+             success: function (result){
+                 console.log(result);
+                 $("#vliegveldlistbox").empty();
+                 $.each(result._embedded.vliegvelds,function(index,vliegveld){
+
+
+                       $('#vliegveldlistbox').append("<option value=" + vliegveld._links.vliegtuigList.href + ">"+vliegveld.naam+"</option>");
+
+                       console.log(vliegveld._links.self.href);
+                 });
+
+
+             },
+             error: function(result){
+                 console.log(result);
+                 $('#vliegveldlistbox').html(result.responseText);
+             }
+
+         })
+
 
 
   };
+
+
 
 var fillPlaneFuel = function(){
 
@@ -115,6 +154,63 @@ var fillPlaneFuel = function(){
 
 
   };
+
+
+
+
+
+
+var vliegvliegtuig = function(){
+
+         var nope = "noppppeee";
+         $('#vliegtuiglistbox').html = "";
+         //var vliegtuig = document.getElementById("vliegtuiglistbox").selectedIndex;
+
+
+         //console.log(vliegtuig);
+        //Pak de selected vliegtuig
+         var e = document.getElementById("vliegtuiglistbox");
+         var strUser = e.options[e.selectedIndex].value;
+
+
+        //pak de selected vliegveld
+        var ed = document.getElementById("vliegveldlistbox");
+        var veld = ed.options[ed.selectedIndex].value;
+
+
+         console.log(strUser);
+         console.log(veld);
+
+
+        //Zoek hem in de database
+        //Doe een ajax insert op die locatie:
+        $.ajax({
+             url: veld,
+             type: "post",
+             data: JSON.stringify({
+                strUser
+             }),
+             contentType: "application/json",
+             success: function (result){
+                 console.log(result);
+
+
+             },
+             error: function(result){
+                 console.log(result);
+                 $('#vliegtuiglistbox').html(result.responseText);
+             }
+
+         })
+
+
+
+        //Maak van brandstof 5000 (insert)
+
+
+
+  };
+
 
 
 /*

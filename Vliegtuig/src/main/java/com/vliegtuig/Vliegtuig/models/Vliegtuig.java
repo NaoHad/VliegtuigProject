@@ -13,8 +13,9 @@ public class Vliegtuig {
     private long id;
     //Vloot van vliegtuigen beheren
     //Details van elk vliegtuig
-    
+
     private String vliegtuigNaam;
+    private String maatschappij;
     private int brandstof;
 
     public long getId() {
@@ -39,5 +40,13 @@ public class Vliegtuig {
 
     public void setBrandstof(int brandstof) {
         this.brandstof = brandstof;
+    }
+
+    public String getMaatschappij() {
+        return maatschappij;
+    }
+
+    public void setMaatschappij(String maatschappij) {
+        this.maatschappij = maatschappij;
     }
 }

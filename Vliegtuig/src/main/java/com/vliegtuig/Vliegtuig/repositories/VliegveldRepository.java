@@ -6,4 +6,5 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource(path ="vliegveld")
 public interface VliegveldRepository extends JpaRepository<Vliegveld,Long> {
+
 }

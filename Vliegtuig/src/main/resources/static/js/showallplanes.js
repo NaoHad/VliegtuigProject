@@ -180,28 +180,50 @@ var vliegvliegtuig = function(){
 
          console.log(strUser);
          console.log(veld);
+        //doe een get naar vliegtuig:
+        $.ajax({
+                     url: strUser,
+                     type: "get",
+                     success: function (result){
+                         console.log(result);
+                         $('#vliegtuigTable').html("");
+                         var selectedVliegtuig = result;
+                         //PLAATS DEZE VLIEG
+                          $.ajax({
+                                      url: veld,
+                                      type: "post",
+                                      data: JSON.stringify({
+                                         selectedVliegtuig
+                                      }),
+                                      contentType: "application/json",
+                                      success: function (result){
+                                          console.log(result);
+
+
+                                      },
+                                      error: function(result){
+                                          console.log(result);
+                                          $('#vliegtuiglistbox').html(result.responseText);
+                                      }
+
+                           })
+
+                         //PLAATS DEZE VLIEG
+
+
+
+                     },
+                     error: function(result){
+                         console.log(result);
+                         $('#vliegtuigen').html(result.responseText);
+                     }
+
+        })
 
 
         //Zoek hem in de database
         //Doe een ajax insert op die locatie:
-        $.ajax({
-             url: veld,
-             type: "post",
-             data: JSON.stringify({
-                strUser
-             }),
-             contentType: "application/json",
-             success: function (result){
-                 console.log(result);
 
-
-             },
-             error: function(result){
-                 console.log(result);
-                 $('#vliegtuiglistbox').html(result.responseText);
-             }
-
-         })
 
 
 

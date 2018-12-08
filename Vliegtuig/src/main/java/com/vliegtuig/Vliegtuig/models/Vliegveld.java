@@ -27,4 +27,20 @@ public class Vliegveld {
     public void setNaam(String naam) {
         this.naam = naam;
     }
+
+    public List<Vliegtuig> getVliegtuigList() {
+        return vliegtuigList;
+    }
+
+    public void setVliegtuigList(List<Vliegtuig> vliegtuigList) {
+        this.vliegtuigList = vliegtuigList;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 }

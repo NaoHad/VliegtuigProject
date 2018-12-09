@@ -91,10 +91,10 @@ var fillvliegveldListbox = function(){
                  $("#vliegveldlistbox").empty();
                  $.each(result._embedded.vliegvelds,function(index,vliegveld){
 
+                        //._links.self.href    ._links.vliegtuigList.href
+                       $('#vliegveldlistbox').append("<option value=" + vliegveld._links.self.href + ">"+vliegveld.naam+"</option>");
 
-                       $('#vliegveldlistbox').append("<option value=" + vliegveld._links.vliegtuigList.href + ">"+vliegveld.naam+"</option>");
-
-                       console.log(vliegveld._links.self.href);
+                       //console.log(vliegveld._links.self.href);
                  });
 
 
@@ -162,12 +162,6 @@ var fillPlaneFuel = function(){
 
 var vliegvliegtuig = function(){
 
-         var nope = "noppppeee";
-         $('#vliegtuiglistbox').html = "";
-         //var vliegtuig = document.getElementById("vliegtuiglistbox").selectedIndex;
-
-
-         //console.log(vliegtuig);
         //Pak de selected vliegtuig
          var e = document.getElementById("vliegtuiglistbox");
          var strUser = e.options[e.selectedIndex].value;
@@ -178,56 +172,76 @@ var vliegvliegtuig = function(){
         var veld = ed.options[ed.selectedIndex].value;
 
 
-         console.log(strUser);
-         console.log(veld);
-        //doe een get naar vliegtuig:
-        $.ajax({
-                     url: strUser,
-                     type: "get",
-                     success: function (result){
-                         console.log(result);
-                         $('#vliegtuigTable').html("");
-                         var selectedVliegtuig = result;
-                         //PLAATS DEZE VLIEG
-                          $.ajax({
-                                      url: veld,
-                                      type: "post",
-                                      data: JSON.stringify({
-                                         selectedVliegtuig
-                                      }),
-                                      contentType: "application/json",
-                                      success: function (result){
-                                          console.log(result);
+         //console.log(strUser);//vliegtuiglink
+         //console.log(veld);//VliegveldLink
+        var brandstof= 0;
+
+           //eerst een get naar vliegtuig:
+         $.ajax({
+                                url: strUser,
+                                type: "get",
+                                success: function (result){
+                                    //console.log(result);
+                                    //$('#vliegtuigTable').html("");
+                                    console.log(result.brandstof);
+                                    brandstof  = result.brandstof;
+                                    console.log(brandstof);
 
 
-                                      },
-                                      error: function(result){
-                                          console.log(result);
-                                          $('#vliegtuiglistbox').html(result.responseText);
-                                      }
+                                    console.log(brandstof);
+                                            if(brandstof > 2000){
+                                                console.log("genoeg brandstof");
 
-                           })
+                                            //doe een patch in vliegtuiglink op veld vliegveldlink
+                                            //maak van brandstof -> brandstof-2000
+                                            //maak van vliegveldlink de nieuwe vliegveldlink
+                                                var nieuwebrandstof = brandstof - 2000;
 
-                         //PLAATS DEZE VLIEG
-
-
-
-                     },
-                     error: function(result){
-                         console.log(result);
-                         $('#vliegtuigen').html(result.responseText);
-                     }
-
-        })
-
-
-        //Zoek hem in de database
-        //Doe een ajax insert op die locatie:
+                                                $.ajax({
+                                                             url: strUser,
+                                                             type: "patch",
+                                                             data: JSON.stringify({
+                                                                "vliegveldLink": veld,
+                                                                "brandstof": nieuwebrandstof
+                                                             }),
+                                                             contentType: "application/json",
+                                                             success: function (result){
+                                                                 console.log(result);
 
 
 
 
-        //Maak van brandstof 5000 (insert)
+                                                             },
+                                                             error: function(result){
+                                                                 console.log(result);
+                                                                 $('#vliegtuiglistbox').html(result.responseText);
+                                                             }
+
+                                                })
+                                            }
+                                            else{
+                                                //niet genoeg brandstof
+                                                alert("NIET GENOEG BRANDSTOF");
+
+
+                                            }
+
+
+
+
+
+                                },
+                                error: function(result){
+                                    console.log(result);
+                                    $('#vliegtuigen').html(result.responseText);
+                                }
+
+         })
+
+
+
+
+
 
 
 
@@ -264,3 +278,158 @@ var vliegvliegtuig = function(){
      };
 
 */
+
+
+
+
+
+
+//        //doe een get naar vliegveld:
+//        $.ajax({
+//                     url: veld,
+//                     type: "get",
+//                     success: function (result){
+//                         console.log(result);
+//                         //$('#vliegtuigTable').html("");
+//                         var selectedVliegveld = result;
+//
+//
+//                     },
+//                     error: function(result){
+//                         console.log(result);
+//                         $('#vliegtuigen').html(result.responseText);
+//                     }
+//
+//        })
+
+/*
+var vliegvliegtuig = function(){
+
+         var nope = "noppppeee";
+         $('#vliegtuiglistbox').html = "";
+         //var vliegtuig = document.getElementById("vliegtuiglistbox").selectedIndex;
+
+
+         //console.log(vliegtuig);
+        //Pak de selected vliegtuig
+         var e = document.getElementById("vliegtuiglistbox");
+         var strUser = e.options[e.selectedIndex].value;
+
+
+        //pak de selected vliegveld
+        var ed = document.getElementById("vliegveldlistbox");
+        var veld = ed.options[ed.selectedIndex].value;
+
+
+         console.log(strUser);
+         console.log(veld);//VliegveldLink
+
+        //doe een patch in vliegtuiglink op veld vliegveldlink
+
+
+         //var plek = veld._links.vliegtuigList;
+        //console.log(veld._links.vliegtuigList.href);
+
+
+//$.ajax({
+//                                             url: veld,
+//                                             type: "get",
+//                                             success: function (result){
+//                                                 console.log(result);
+//                                                 //$('#vliegtuigTable').html("");
+//                                                 var selectedVliegveld = result;
+//
+//
+//                                             },
+//                                             error: function(result){
+//                                                 console.log(result);
+//                                                 $('#vliegtuigen').html(result.responseText);
+//                                             }
+//
+//                         })
+
+        //doe een get naar vliegtuig:
+        $.ajax({
+                     url: strUser,
+                     type: "get",
+                     success: function (result){
+                         console.log(result);
+                         $('#vliegtuigTable').html("");
+                         var selectedVliegtuig = result;
+
+
+
+
+                            //PLAATS DEZE VLIEG
+//                                                      $.ajax({
+//                                                                  url: veld,
+//                                                                  type: "post",
+//                                                                  data: JSON.stringify({
+//                                                                     selectedVliegtuig
+//                                                                  }),
+//                                                                  contentType: "application/json",
+//                                                                  success: function (result){
+//                                                                      console.log(result);
+//
+//
+//                                                                  },
+//                                                                  error: function(result){
+//                                                                      console.log(result);
+//                                                                      $('#vliegtuiglistbox').html(result.responseText);
+//                                                                  }
+//
+//                                                       })
+
+                                                     //PLAATS DEZE VLIEG
+
+
+
+
+                     },
+                     error: function(result){
+                         console.log(result);
+                         $('#vliegtuigen').html(result.responseText);
+                     }
+
+        })
+
+
+
+
+
+        //Zoek hem in de database
+        //Doe een ajax insert op die locatie:
+
+
+
+
+        //Maak van brandstof 5000 (insert)
+
+
+
+  };
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

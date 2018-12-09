@@ -16,7 +16,7 @@ public class Vliegtuig {
     private String vliegtuigNaam;
     private String maatschappij;
     private int brandstof;
-
+    private String vliegveldLink;
     public long getId() {
         return id;
     }
@@ -47,5 +47,13 @@ public class Vliegtuig {
 
     public void setMaatschappij(String maatschappij) {
         this.maatschappij = maatschappij;
+    }
+
+    public String getVliegveldLink() {
+        return vliegveldLink;
+    }
+
+    public void setVliegveldLink(String vliegveldLink) {
+        this.vliegveldLink = vliegveldLink;
     }
 }
